@@ -10,7 +10,6 @@ macro(do_cpp_project)
 	find_package(Qt5QuickWidgets REQUIRED)
 	find_package(Qt5Quick REQUIRED)
 	find_package(Qt5Network REQUIRED)
-	find_package(Qt5WinExtras REQUIRED)
 	find_package(Qt5WebEngineWidgets REQUIRED)
 	find_package(Qt5WebSockets REQUIRED)
 	find_package(Qt5Concurrent REQUIRED)
@@ -144,9 +143,11 @@ macro(cpp_post_target)
 	set_target_properties(${PROJECT_NAME} PROPERTIES
 		LINK_FLAGS_RELWITHDEBINFO "${OPTIMIZE_LINK_FLAGS}")
 
+	set_target_properties(${PROJECT_NAME} PROPERTIES
+		CXX_STANDARD 20)
+
 	target_link_libraries(${PROJECT_NAME}
 		Qt5::Widgets
-		Qt5::WinExtras
 		Qt5::WebEngineWidgets
 		Qt5::Quick
 		Qt5::Qml
@@ -209,8 +210,8 @@ function(requires_project)
 				set(libs ${libs} game_creation)
 			endif()
 		elseif(${name} STREQUAL "usvfs")
-			set(src_dirs "${modorganizer_build_path}/usvfs/src")
-			set(include_dirs "${modorganizer_build_path}/usvfs/include")
+			set(src_dirs "${modorganizer_super_path}/usvfs/src")
+			set(include_dirs "${modorganizer_super_path}/usvfs/include")
 			set(libs "usvfs_x64")
         elseif(${name} STREQUAL "uibase")
 		    if(${PROJECT_NAME} STREQUAL "uibasetests")

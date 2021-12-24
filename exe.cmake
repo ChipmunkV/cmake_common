@@ -80,5 +80,4 @@ macro(do_src)
 	cpp_post_target()
 
 	install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${install_dir})
-	install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}> DESTINATION pdb)
 endmacro()

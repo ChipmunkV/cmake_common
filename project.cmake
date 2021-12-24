@@ -51,35 +51,10 @@ if(NOT DEFINED run_elevated)
 endif()
 
 
-
-set(COMPILE_FLAGS "/std:c++latest /MP")
-set(OPTIMIZE_COMPILE_FLAGS "/O2")
-set(OPTIMIZE_LINK_FLAGS "/LTCG /INCREMENTAL:NO /OPT:REF /OPT:ICF")
-
-if(${enable_warnings})
-	set(COMPILE_FLAGS "${COMPILE_FLAGS} /Wall /wd4464")
+if(NOT WIN32)
+	add_compile_definitions(QDLLEXPORT=)
+	add_compile_definitions(DLLEXPORT=)
 endif()
-
-if(NOT ${enable_permissive})
-	set(COMPILE_FLAGS "${COMPILE_FLAGS} /permissive-")
-endif()
-
-if(${enable_bigobj})
-    set(COMPILE_FLAGS "${COMPILE_FLAGS} /bigobj")
-endif()
-
-required_variable(BOOST_ROOT PATH)
-required_variable(BOOST_LIBRARYDIR PATH)
-required_variable(QT_ROOT PATH)
-required_variable(FMT_ROOT PATH)
-required_variable(SPDLOG_ROOT PATH)
-required_variable(LOOT_PATH PATH)
-required_variable(LZ4_ROOT PATH)
-required_variable(ZLIB_ROOT PATH)
-required_variable(PYTHON_ROOT PATH)
-required_variable(SEVENZ_ROOT PATH)
-required_variable(LIBBSARCH_ROOT PATH)
-required_variable(CMAKE_INSTALL_PREFIX PATH)
 
 get_real_path(modorganizer_build_path "${CMAKE_CURRENT_LIST_DIR}/../..")
 get_real_path(modorganizer_super_path "${modorganizer_build_path}/modorganizer_super")
@@ -87,12 +62,6 @@ get_real_path(uibase_path "${modorganizer_super_path}/uibase")
 get_real_path(uibase_include_path "${uibase_path}/src")
 get_real_path(modorganizer_install_path "${modorganizer_super_path}/../../install")
 get_real_path(modorganizer_install_lib_path "${modorganizer_install_path}/libs")
-
-list(APPEND CMAKE_PREFIX_PATH
-	${QT_ROOT}/lib/cmake
-	${LZ4_ROOT}/dll
-	${FMT_ROOT}/build
-	${BOOST_ROOT}/build)
 
 
 if(${project_type} STREQUAL "plugin")
