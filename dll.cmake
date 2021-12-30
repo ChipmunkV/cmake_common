@@ -23,8 +23,10 @@ macro(do_src)
 			RUNTIME DESTINATION ${install_dir}
 			ARCHIVE DESTINATION libs)
 
-	install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}>
-			DESTINATION pdb)
+	if(WIN32)
+		install(FILES $<TARGET_PDB_FILE:${PROJECT_NAME}>
+				DESTINATION pdb)
+	endif()
 
 	set_project_to_run_from_install(ModOrganizer.exe)
 	cpp_post_target()

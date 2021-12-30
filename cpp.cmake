@@ -16,7 +16,7 @@ macro(do_cpp_project)
 	find_package(Qt5Qml REQUIRED)
 	find_package(Qt5LinguistTools)
 	find_package(ZLIB REQUIRED)
-	find_package(Boost REQUIRED COMPONENTS thread)
+	find_package(Boost REQUIRED COMPONENTS locale program_options thread)
 	find_package(fmt REQUIRED)
 
 	set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -98,6 +98,7 @@ macro(cpp_pre_target)
 		${LOOT_PATH}
 		${LIBBSARCH_ROOT}
 		${gtest_directory}/build/lib
+		${ADDITIONAL_LINK_DIRECTORIES}
 	)
 endmacro()
 
@@ -156,10 +157,15 @@ macro(cpp_post_target)
 		Qt5::WebSockets
 		Qt5::Concurrent
 		fmt::fmt
-		liblz4 zlibstatic
+		lz4 z
 		${Boost_LIBRARIES}
-		Dbghelp Version Shlwapi
 	)
+
+	if(WIN32)
+		target_link_libraries(${PROJECT_NAME}
+			Dbghelp Version Shlwapi
+		)
+	endif()
 
 	if(NOT ${PROJECT_NAME} STREQUAL "uibase")
 		requires_project("uibase")
