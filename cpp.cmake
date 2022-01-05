@@ -230,6 +230,18 @@ function(requires_project)
 
 			set(include_dirs ${src_dirs})
 			set(libs "uibase")
+        elseif(${name} STREQUAL "archive")
+			set(src_dirs "${modorganizer_super_path}/${name}/src")
+			set(include_dirs ${src_dirs})
+			if(WIN32)
+				set(libs ${name})
+			else()
+				set(libs modorganizer-${name}) # name conflict
+			endif()
+        elseif(${name} STREQUAL "bsatk")
+			set(src_dirs "${modorganizer_super_path}/${name}/src")
+			set(include_dirs ${src_dirs})
+			set(libs ${name} lz4 z ${Boost_LIBRARIES}) # for the link order
 		else()
 			set(src_dirs "${modorganizer_super_path}/${name}/src")
 			set(include_dirs ${src_dirs})
